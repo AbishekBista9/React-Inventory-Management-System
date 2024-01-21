@@ -16,6 +16,7 @@ app.use((req, res, next) => {
   const allowedOrigins = [
     "http://localhost:3000",
     "https://react-inventory-management-system-client.vercel.app",
+    "https://shapewearims.vercel.app",
   ];
   const { origin } = req.headers;
 
