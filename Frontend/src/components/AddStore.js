@@ -43,7 +43,7 @@ export default function AddStore() {
     data.append("file", image);
     data.append("upload_preset", "inventoryapp");
 
-    await fetch("https://api.cloudinary.com/v1_1/ddhayhptm/image/upload", {
+    await fetch("https://api.cloudinary.com/v1_1/drwhshlwv/image/upload", {
       method: "POST",
       body: data,
     })
