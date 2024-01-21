@@ -29,6 +29,6 @@ if (mongoose.models.Product) {
     { timestamps: true }
   );
 
-  const Product = mongoose.model("Product", ProductSchema);
+  const Product = mongoose.model("product", ProductSchema);
   module.exports = Product;
 }
