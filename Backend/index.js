@@ -12,7 +12,9 @@ const app = express();
 const PORT = 4000;
 main();
 app.use(express.json());
-app.use(cors());
+app.use("/", (req, res) => {
+  res.send("Server is running");
+});
 
 // Store API
 app.use("/api/store", storeRoute);
