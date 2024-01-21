@@ -12,7 +12,32 @@ const app = express();
 const PORT = 4000;
 main();
 app.use(express.json());
-app.use(cors());
+app.use((req, res, next) => {
+  const allowedOrigins = [
+    "http://localhost:3000",
+    "https://react-inventory-management-system-client.vercel.app",
+  ];
+  const { origin } = req.headers;
+
+  let corsOptions;
+  let error = "NOT_AUTHORIZED";
+  if (allowedOrigins.indexOf(origin) > -1) {
+    res.setHeader("Access-Control-Allow-Origin", "*");
+    corsOptions = { origin: true };
+    res.header(
+      "Access-Control-Allow-Methods",
+      "GET,PUT,POST,DELETE,PATCH,OPTIONS"
+    );
+    res.header(
+      "Access-Control-Allow-Headers",
+      "Origin, X-Requested-With, Content-Type, Accept, Authorization"
+    );
+    next(null, corsOptions);
+  } else {
+    corsOptions = { origin: false };
+    next(null, error);
+  }
+});
 
 // Store API
 app.use("/api/store", storeRoute);

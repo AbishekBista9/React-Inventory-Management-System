@@ -6,7 +6,7 @@ export default function AddPurchaseDetails({
   addSaleModalSetting,
   products,
   handlePageUpdate,
-  authContext
+  authContext,
 }) {
   const [purchase, setPurchase] = useState({
     userID: authContext.user,
@@ -27,7 +27,7 @@ export default function AddPurchaseDetails({
 
   // POST Data
   const addSale = () => {
-    fetch("http://localhost:4000/api/purchase/add", {
+    fetch(`${process.env.REACT_APP_API_URL}/api/purchase/add`, {
       method: "POST",
       headers: {
         "Content-type": "application/json",

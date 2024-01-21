@@ -7,7 +7,7 @@ export default function AddSale({
   products,
   stores,
   handlePageUpdate,
-  authContext
+  authContext,
 }) {
   const [sale, setSale] = useState({
     userID: authContext.user,
@@ -20,7 +20,6 @@ export default function AddSale({
   const [open, setOpen] = useState(true);
   const cancelButtonRef = useRef(null);
 
-
   // Handling Input Change for input fields
   const handleInputChange = (key, value) => {
     setSale({ ...sale, [key]: value });
@@ -28,7 +27,7 @@ export default function AddSale({
 
   // POST Data
   const addSale = () => {
-    fetch("http://localhost:4000/api/sales/add", {
+    fetch(`${process.env.REACT_APP_API_URL}/api/sales/add`, {
       method: "POST",
       headers: {
         "Content-type": "application/json",

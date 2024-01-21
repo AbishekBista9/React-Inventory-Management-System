@@ -14,7 +14,7 @@ export default function AddProduct({
     manufacturer: "",
     description: "",
   });
-  console.log("----",product)
+  console.log("----", product);
   const [open, setOpen] = useState(true);
   const cancelButtonRef = useRef(null);
 
@@ -23,7 +23,7 @@ export default function AddProduct({
   };
 
   const addProduct = () => {
-    fetch("http://localhost:4000/api/product/add", {
+    fetch(`${process.env.REACT_APP_API_URL}/api/product/add`, {
       method: "POST",
       headers: {
         "Content-type": "application/json",
