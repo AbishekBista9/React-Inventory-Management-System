@@ -12,6 +12,8 @@ function Register() {
     imageUrl: "",
   });
 
+  console.log("form data: ", form);
+
   const navigate = useNavigate();
 
   // Handling Input change for registration form.

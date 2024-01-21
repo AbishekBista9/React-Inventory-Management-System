@@ -15,6 +15,8 @@ export default function AddStore() {
     image: "",
   });
 
+  console.log("add store form: ", form);
+
   const handleInputChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
@@ -49,6 +51,7 @@ export default function AddStore() {
     })
       .then((res) => res.json())
       .then((data) => {
+        console.log("data from image upload: ", data);
         setForm({ ...form, image: data.url });
         alert("Store Image Successfully Uploaded");
       })
@@ -148,6 +151,7 @@ export default function AddStore() {
                             </label>
                             <select
                               id="category"
+                              value={form.category}
                               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                               onChange={(e) =>
                                 setForm({

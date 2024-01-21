@@ -13,9 +13,9 @@ function Inventory() {
   const [stores, setAllStores] = useState([]);
 
   const authContext = useContext(AuthContext);
-  console.log('====================================');
+  console.log("====================================");
   console.log(authContext);
-  console.log('====================================');
+  console.log("====================================");
 
   useEffect(() => {
     fetchProductsData();
@@ -62,7 +62,6 @@ function Inventory() {
     setUpdateProduct(selectedProductData);
     setShowUpdateModal(!showUpdateModal);
   };
-
 
   // Delete item
   const deleteItem = (id) => {
