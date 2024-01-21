@@ -15,8 +15,6 @@ export default function AddStore() {
     image: "",
   });
 
-  console.log("add store form: ", form);
-
   const handleInputChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
@@ -51,7 +49,6 @@ export default function AddStore() {
     })
       .then((res) => res.json())
       .then((data) => {
-        console.log("data from image upload: ", data);
         setForm({ ...form, image: data.url });
         alert("Store Image Successfully Uploaded");
       })
