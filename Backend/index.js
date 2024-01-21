@@ -12,6 +12,7 @@ const app = express();
 const PORT = 4000;
 main();
 app.use(express.json());
+app.use(cors());
 app.use("/", (req, res) => {
   res.send("Server is running");
 });
@@ -88,5 +89,3 @@ app.get("/testget", async (req, res) => {
 app.listen(PORT, () => {
   console.log("I am live again");
 });
-
-module.exports = app;
