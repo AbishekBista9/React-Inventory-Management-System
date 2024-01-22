@@ -95,7 +95,7 @@ function Inventory() {
         <div className="bg-white rounded p-3">
           <span className="font-semibold px-4">Overall Inventory</span>
           <div className=" flex flex-col md:flex-row justify-center items-center  ">
-            <div className="flex flex-col p-10  w-full  md:w-3/12  ">
+            <div className="flex flex-col gap-3 p-10   w-full  md:w-3/12 sm:border-y-2  md:border-x-2 md:border-y-0  ">
               <span className="font-semibold text-blue-600 text-base">
                 Total Products
               </span>
@@ -119,14 +119,14 @@ function Inventory() {
                     Last 7 days
                   </span>
                 </div>
-                <div className="flex flex-col">
+                {/* <div className="flex flex-col">
                   <span className="font-semibold text-gray-600 text-base">
                     $2000
                   </span>
                   <span className="font-thin text-gray-400 text-xs">
                     Revenue
                   </span>
-                </div>
+                </div> */}
               </div>
             </div>
             <div className="flex flex-col gap-3 p-10  w-full  md:w-3/12  sm:border-y-2 md:border-x-2 md:border-y-0">
@@ -142,12 +142,12 @@ function Inventory() {
                     Last 7 days
                   </span>
                 </div>
-                <div className="flex flex-col">
+                {/* <div className="flex flex-col">
                   <span className="font-semibold text-gray-600 text-base">
                     $1500
                   </span>
                   <span className="font-thin text-gray-400 text-xs">Cost</span>
-                </div>
+                </div> */}
               </div>
             </div>
             <div className="flex flex-col gap-3 p-10  w-full  md:w-3/12  border-y-2  md:border-x-2 md:border-y-0">
