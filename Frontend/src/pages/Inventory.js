@@ -1,13 +1,19 @@
 import React, { useState, useEffect, useContext } from "react";
 import AddProduct from "../components/AddProduct";
+import TopFiveSales from "../components/TopFiveSales";
 import UpdateProduct from "../components/UpdateProduct";
 import AuthContext from "../AuthContext";
+import OutOfStock from "../components/OutOfStock";
 
 function Inventory() {
   const [showProductModal, setShowProductModal] = useState(false);
+  const [showTopSellingModal, setShowTopSellingModal] = useState(false);
+  const [showOutOfStockModal, setShowOutOfStockModal] = useState(false);
   const [showUpdateModal, setShowUpdateModal] = useState(false);
   const [updateProduct, setUpdateProduct] = useState([]);
   const [products, setAllProducts] = useState([]);
+  const [topFiveSales, setTopFiveSales] = useState([]);
+  const [outOfStockProducts, setOutOfStockProducts] = useState([]);
   const [searchTerm, setSearchTerm] = useState();
   const [updatePage, setUpdatePage] = useState(true);
   const [stores, setAllStores] = useState([]);
@@ -17,9 +23,14 @@ function Inventory() {
   console.log(authContext);
   console.log("====================================");
 
+  console.log("top five sales: ", topFiveSales);
+  console.log("out of stock products: ", outOfStockProducts);
+
   useEffect(() => {
     fetchProductsData();
     fetchSalesData();
+    fetchTopSellingProduct();
+    fetchOutOfStockProduct();
   }, [updatePage]);
 
   // Fetching Data of All Products
@@ -30,6 +41,28 @@ function Inventory() {
       .then((response) => response.json())
       .then((data) => {
         setAllProducts(data);
+      })
+      .catch((err) => console.log(err));
+  };
+
+  const fetchTopSellingProduct = () => {
+    fetch(
+      `${process.env.REACT_APP_API_URL}/api/sales/get/${authContext.user}/topfivesales`
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        setTopFiveSales(data);
+      })
+      .catch((err) => console.log(err));
+  };
+
+  const fetchOutOfStockProduct = () => {
+    fetch(
+      `${process.env.REACT_APP_API_URL}/api/product/get/${authContext.user}/outofstock`
+    )
+      .then((response) => response.json())
+      .then((data) => {
+        setOutOfStockProducts(data);
       })
       .catch((err) => console.log(err));
   };
@@ -60,9 +93,18 @@ function Inventory() {
     setShowProductModal(!showProductModal);
   };
 
+  const topFiveSalesModalSetting = () => {
+    setShowTopSellingModal(!showTopSellingModal);
+  };
+
+  const outOfStockModalSetting = () => {
+    setShowOutOfStockModal(!showOutOfStockModal);
+  };
+
   // Modal for Product UPDATE
   const updateProductModalSetting = (selectedProductData) => {
     console.log("Clicked: edit");
+    console.log("selected data: ", selectedProductData);
     setUpdateProduct(selectedProductData);
     setShowUpdateModal(!showUpdateModal);
   };
@@ -130,16 +172,20 @@ function Inventory() {
               </div>
             </div>
             <div className="flex flex-col gap-3 p-10  w-full  md:w-3/12  sm:border-y-2 md:border-x-2 md:border-y-0">
-              <span className="font-semibold text-purple-600 text-base">
+              <button
+                className="font-semibold text-purple-600 text-base text-left"
+                onClick={topFiveSalesModalSetting}
+              >
+                {/* <Link to="/inventory/add-product">Add Product</Link> */}
                 Top Selling
-              </span>
+              </button>
               <div className="flex gap-8">
                 <div className="flex flex-col">
                   <span className="font-semibold text-gray-600 text-base">
                     5
                   </span>
                   <span className="font-thin text-gray-400 text-xs">
-                    Last 7 days
+                    All time
                   </span>
                 </div>
                 {/* <div className="flex flex-col">
@@ -151,21 +197,17 @@ function Inventory() {
               </div>
             </div>
             <div className="flex flex-col gap-3 p-10  w-full  md:w-3/12  border-y-2  md:border-x-2 md:border-y-0">
-              <span className="font-semibold text-red-600 text-base">
+              <button
+                className="font-semibold text-red-600 text-base text-left"
+                onClick={outOfStockModalSetting}
+              >
+                {/* <Link to="/inventory/add-product">Add Product</Link> */}
                 Low Stocks
-              </span>
+              </button>
               <div className="flex gap-8">
                 <div className="flex flex-col">
                   <span className="font-semibold text-gray-600 text-base">
-                    12
-                  </span>
-                  <span className="font-thin text-gray-400 text-xs">
-                    Ordered
-                  </span>
-                </div>
-                <div className="flex flex-col">
-                  <span className="font-semibold text-gray-600 text-base">
-                    2
+                    {outOfStockProducts.length}
                   </span>
                   <span className="font-thin text-gray-400 text-xs">
                     Not in Stock
@@ -186,6 +228,22 @@ function Inventory() {
           <UpdateProduct
             updateProductData={updateProduct}
             updateModalSetting={updateProductModalSetting}
+            handlePageUpdate={handlePageUpdate}
+          />
+        )}
+        {showTopSellingModal && (
+          <TopFiveSales
+            addProductModalSetting={topFiveSalesModalSetting}
+            handlePageUpdate={handlePageUpdate}
+            topFiveSales={topFiveSales}
+          />
+        )}
+
+        {showOutOfStockModal && (
+          <OutOfStock
+            addProductModalSetting={outOfStockModalSetting}
+            handlePageUpdate={handlePageUpdate}
+            outOfStockProducts={outOfStockProducts}
           />
         )}
 

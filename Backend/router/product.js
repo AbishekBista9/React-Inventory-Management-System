@@ -8,6 +8,9 @@ app.post("/add", product.addProduct);
 // Get All Products
 app.get("/get/:userId", product.getAllProducts);
 
+// Get All Out Of Stock Products
+app.get("/get/:userId/outofstock", product.getOutOfStockProducts);
+
 // Delete Selected Product Item
 app.get("/delete/:id", product.deleteSelectedProduct);
 

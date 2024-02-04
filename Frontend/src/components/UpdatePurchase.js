@@ -2,33 +2,44 @@ import { Fragment, useRef, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { PlusIcon } from "@heroicons/react/24/outline";
 
-export default function UpdateProduct({
-  updateProductData,
+export default function UpdatePurchase({
+  updatePurchaseData,
   updateModalSetting,
   handlePageUpdate,
 }) {
-  const { _id, name, manufacturer, description } = updateProductData;
-  const [product, setProduct] = useState({
-    productID: _id,
-    name: name,
-    manufacturer: manufacturer,
-    description: description,
+  const {
+    _id,
+    ProductID: { _id: productID, name } = {},
+    QuantityPurchased,
+    PurchaseDate,
+    TotalPurchaseAmount,
+  } = updatePurchaseData;
+
+  const oldPurchaseQuantity = QuantityPurchased;
+
+  const [purchase, setPurchase] = useState({
+    purchaseID: _id,
+    productID: productID,
+    oldPurchaseQuantity,
+    QuantityPurchased,
+    PurchaseDate,
+    TotalPurchaseAmount,
   });
   const [open, setOpen] = useState(true);
   const cancelButtonRef = useRef(null);
 
   const handleInputChange = (key, value) => {
     console.log(key);
-    setProduct({ ...product, [key]: value });
+    setPurchase({ ...purchase, [key]: value });
   };
 
-  const updateProduct = () => {
-    fetch(`${process.env.REACT_APP_API_URL}/api/product/update`, {
+  const updatePurchase = () => {
+    fetch(`${process.env.REACT_APP_API_URL}/api/purchase/update`, {
       method: "POST",
       headers: {
         "Content-type": "application/json",
       },
-      body: JSON.stringify(product),
+      body: JSON.stringify(purchase),
     })
       .then((result) => {
         alert("Product Updated");
@@ -84,41 +95,22 @@ export default function UpdateProduct({
                         as="h3"
                         className="text-lg font-semibold leading-6 text-gray-900 "
                       >
-                        Update Product
+                        Update {name}
                       </Dialog.Title>
                       <form action="#">
                         <div className="grid gap-4 mb-4 sm:grid-cols-2">
                           <div>
                             <label
-                              htmlFor="name"
+                              htmlFor="quantitypurchased"
                               className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                             >
-                              Name
+                              Quantity Purchased
                             </label>
                             <input
                               type="text"
-                              name="name"
-                              id="name"
-                              value={product.name}
-                              onChange={(e) =>
-                                handleInputChange(e.target.name, e.target.value)
-                              }
-                              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                              placeholder="Ex. Apple iMac 27&ldquo;"
-                            />
-                          </div>
-                          <div>
-                            <label
-                              htmlFor="manufacturer"
-                              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                            >
-                              Manufacturer
-                            </label>
-                            <input
-                              type="text"
-                              name="manufacturer"
-                              id="manufacturer"
-                              value={product.manufacturer}
+                              name="QuantityPurchased"
+                              id="quantitypurchased"
+                              value={purchase.QuantityPurchased}
                               onChange={(e) =>
                                 handleInputChange(e.target.name, e.target.value)
                               }
@@ -126,30 +118,42 @@ export default function UpdateProduct({
                               placeholder="Ex. Apple"
                             />
                           </div>
-                          <div className="sm:col-span-2">
+                          <div>
                             <label
-                              htmlFor="description"
+                              htmlFor="totalpurchaseamount"
                               className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                             >
-                              Description
+                              Toal Purchase Amount
                             </label>
-                            <textarea
-                              id="description"
-                              rows="5"
-                              name="description"
-                              className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-primary-500 focus:border-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                              placeholder="Write a description..."
-                              value={product.description}
+                            <input
+                              id="totalpurchaseamount"
+                              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                              name="TotalPurchaseAmount"
+                              placeholder="Total Purchase Amount"
+                              value={purchase.TotalPurchaseAmount}
                               onChange={(e) =>
                                 handleInputChange(e.target.name, e.target.value)
                               }
+                            />
+                          </div>
+                          <div>
+                            <label
+                              htmlFor="purchasedate"
+                              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
                             >
-                              Standard glass, 3.8GHz 8-core 10th-generation
-                              Intel Core i7 processor, Turbo Boost up to 5.0GHz,
-                              16GB 2666MHz DDR4 memory, Radeon Pro 5500 XT with
-                              8GB of GDDR6 memory, 256GB SSD storage, Gigabit
-                              Ethernet, Magic Mouse 2, Magic Keyboard - US
-                            </textarea>
+                              Purchase Date
+                            </label>
+                            <input
+                              id="purchasedate"
+                              type="date"
+                              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                              name="PurchaseDate"
+                              placeholder="Purchase Date"
+                              value={purchase.PurchaseDate}
+                              onChange={(e) =>
+                                handleInputChange(e.target.name, e.target.value)
+                              }
+                            />
                           </div>
                         </div>
                         <div className="flex items-center space-x-4">
@@ -186,7 +190,7 @@ export default function UpdateProduct({
                   <button
                     type="button"
                     className="inline-flex w-full justify-center rounded-md bg-blue-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-blue-500 sm:ml-3 sm:w-auto"
-                    onClick={updateProduct}
+                    onClick={updatePurchase}
                   >
                     Update Product
                   </button>

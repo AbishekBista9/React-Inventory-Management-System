@@ -31,14 +31,24 @@ const getAllProducts = async (req, res) => {
   res.json(findAllProducts);
 };
 
+const getOutOfStockProducts = async (req, res) => {
+  const findAllProducts = await Product.find({
+    userID: req.params.userId,
+    stock: 0,
+  }).sort({ _id: -1 }); // -1 for descending;
+  res.json(findAllProducts);
+};
+
 // Delete Selected Product
 const deleteSelectedProduct = async (req, res) => {
   const deleteProduct = await Product.deleteOne({ _id: req.params.id });
-  const deletePurchaseProduct = await Purchase.deleteOne({
+  const deletePurchaseProduct = await Purchase.deleteMany({
     ProductID: req.params.id,
   });
 
-  const deleteSaleProduct = await Sales.deleteOne({ ProductID: req.params.id });
+  const deleteSaleProduct = await Sales.deleteMany({
+    ProductID: req.params.id,
+  });
   res.json({ deleteProduct, deletePurchaseProduct, deleteSaleProduct });
 };
 
@@ -77,4 +87,5 @@ module.exports = {
   deleteSelectedProduct,
   updateSelectedProduct,
   searchProduct,
+  getOutOfStockProducts,
 };

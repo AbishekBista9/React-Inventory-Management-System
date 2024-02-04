@@ -1,12 +1,16 @@
 import React, { useState, useEffect, useContext } from "react";
 import AddPurchaseDetails from "../components/AddPurchaseDetails";
 import AuthContext from "../AuthContext";
+import UpdateProduct from "../components/UpdateProduct";
+import UpdatePurchase from "../components/UpdatePurchase";
 
 function PurchaseDetails() {
   const [showPurchaseModal, setPurchaseModal] = useState(false);
   const [purchase, setAllPurchaseData] = useState([]);
   const [products, setAllProducts] = useState([]);
   const [updatePage, setUpdatePage] = useState(true);
+  const [updatePurchase, setUpdatePurchase] = useState([]);
+  const [showUpdateModal, setShowUpdateModal] = useState(false);
 
   const authContext = useContext(AuthContext);
 
@@ -49,6 +53,23 @@ function PurchaseDetails() {
     setUpdatePage(!updatePage);
   };
 
+  const updatePurchaseModalSetting = (selectedPurchaseData) => {
+    console.log("Clicked: edit");
+    console.log("selected data: ", selectedPurchaseData);
+    setUpdatePurchase(selectedPurchaseData);
+    setShowUpdateModal(!showUpdateModal);
+  };
+
+  const deleteItem = (id) => {
+    console.log("Product ID: ", id);
+    console.log(`${process.env.REACT_APP_API_URL}/api/purchase/delete/${id}`);
+    fetch(`${process.env.REACT_APP_API_URL}/api/purchase/delete/${id}`)
+      .then((response) => response.json())
+      .then((data) => {
+        setUpdatePage(!updatePage);
+      });
+  };
+
   return (
     <div className="col-span-12 lg:col-span-10  flex justify-center">
       <div className=" flex flex-col gap-5 w-11/12">
@@ -58,6 +79,13 @@ function PurchaseDetails() {
             products={products}
             handlePageUpdate={handlePageUpdate}
             authContext={authContext}
+          />
+        )}
+        {showUpdateModal && (
+          <UpdatePurchase
+            updatePurchaseData={updatePurchase}
+            updateModalSetting={updatePurchaseModalSetting}
+            handlePageUpdate={handlePageUpdate}
           />
         )}
         {/* Table  */}
@@ -91,6 +119,9 @@ function PurchaseDetails() {
                 <th className="whitespace-nowrap px-4 py-2 text-left font-medium text-gray-900">
                   Total Purchase Amount
                 </th>
+                <th className="whitespace-nowrap px-4 py-2 text-left font-medium text-gray-900">
+                  More
+                </th>
               </tr>
             </thead>
 
@@ -112,6 +143,14 @@ function PurchaseDetails() {
                     </td>
                     <td className="whitespace-nowrap px-4 py-2 text-gray-700">
                       NPR {element.TotalPurchaseAmount}
+                    </td>
+                    <td className="whitespace-nowrap px-4 py-2 text-gray-700">
+                      <span
+                        className="text-green-700 cursor-pointer"
+                        onClick={() => updatePurchaseModalSetting(element)}
+                      >
+                        Edit{" "}
+                      </span>
                     </td>
                   </tr>
                 );

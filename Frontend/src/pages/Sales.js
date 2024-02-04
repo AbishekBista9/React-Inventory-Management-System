@@ -58,6 +58,39 @@ function Sales() {
     setUpdatePage(!updatePage);
   };
 
+  const returnItem = (element) => {
+    console.log("Product ID: ", element);
+    const {
+      _id,
+      ProductID: { _id: productID, name } = {},
+      StockSold,
+    } = element;
+
+    const sales = {
+      _id,
+      productID,
+      StockSold,
+    };
+
+    fetch(`${process.env.REACT_APP_API_URL}/api/sales/return`, {
+      method: "POST",
+      headers: {
+        "Content-type": "application/json",
+      },
+      body: JSON.stringify(sales),
+    })
+      .then((result) => {
+        alert("Sales Returned");
+        handlePageUpdate();
+      })
+      .catch((err) => console.log(err));
+    // fetch(`${process.env.REACT_APP_API_URL}/api/sales/return/${id}`)
+    //   .then((response) => response.json())
+    //   .then((data) => {
+    //     setUpdatePage(!updatePage);
+    //   });
+  };
+
   return (
     <div className="col-span-12 lg:col-span-10  flex justify-center">
       <div className=" flex flex-col gap-5 w-11/12">
@@ -104,6 +137,9 @@ function Sales() {
                 <th className="whitespace-nowrap px-4 py-2 text-left font-medium text-gray-900">
                   Total Sale Amount
                 </th>
+                <th className="whitespace-nowrap px-4 py-2 text-left font-medium text-gray-900">
+                  More
+                </th>
               </tr>
             </thead>
 
@@ -125,6 +161,14 @@ function Sales() {
                     </td>
                     <td className="whitespace-nowrap px-4 py-2 text-gray-700">
                       NPR {element.TotalSaleAmount}
+                    </td>
+                    <td className="whitespace-nowrap px-4 py-2 text-gray-700">
+                      <span
+                        className="text-red-600 px-2 cursor-pointer"
+                        onClick={() => returnItem(element)}
+                      >
+                        Return order
+                      </span>
                     </td>
                   </tr>
                 );
